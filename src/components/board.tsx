@@ -9,7 +9,7 @@ interface GameBoardProps {
 
 export default function GameBoard({currentBoard , setIsSelecting , changeCellValue , isSelecting } : GameBoardProps) {
 
-return (<div style={{ display: "flex", flexDirection: "column" }}>
+return (<div style={{ display: "flex", flexDirection: "column" }} className="container mx-auto">
         {currentBoard.map((column, yIndex) => {
           return (
             <div key={yIndex} style={{ display: "flex", flexDirection: "row" }}>
@@ -28,8 +28,8 @@ return (<div style={{ display: "flex", flexDirection: "column" }}>
                     key={xIndex}
                     style={{
                         userSelect:'none',
-                      width: 30,
-                      height: 30,
+                      minWidth: 20,
+                      minHeight: 20,
                       border: "1px solid black",
                       backgroundColor:
                         squareValue == 1 ? "lightgreen" : "white",

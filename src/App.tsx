@@ -1,7 +1,7 @@
 import { Key, useCallback, useEffect, useRef, useState } from "react";
 import GameBoard from "./components/board";
 
-const boardSize: number = 20; //   100x100
+const boardSize: number = 35; //   100x100
 
 const timeoutDelay: number = 1000;
 
@@ -31,7 +31,6 @@ const countAdjacentNeighboursAlive = (
   x: number,
   y: number
 ) => {
-  // console.log('[start] countAdjacentNeighboursAlive Function')
   // console.log("Checking cell : [x,y]", `[${x},${y}] `)
 
   let currentBoardTemp: number[][] = currentBoard.slice(0);
@@ -64,12 +63,19 @@ const App = () => {
 
   let intervalId = useRef<ReturnType<typeof setInterval> | undefined>();
 
+  useEffect(() => {
+    return () => {
+      if (intervalId.current) {
+        clearTimeout(intervalId.current);
+      }
+    };
+  }, []);
+
   let currentB = useRef(currentBoard);
   currentB.current = currentBoard;
 
   const calculateNextBoard = useCallback(() => {
     let hasChanged = false;
-    console.log("currentBoard", currentBoard);
 
     setTestBoard(JSON.parse(JSON.stringify(currentB.current)));
 
@@ -79,21 +85,20 @@ const App = () => {
 
     let currentBoardTemp = currentB.current.slice(0);
 
-    //debugger
     currentBoardTemp.forEach((row: any, y: number, array: any) => {
       row.forEach((alive: any, x: number, array2: any) => {
         let count: number = countAdjacentNeighboursAlive(array, x, y);
 
         if (alive === 1 && count != 2 && count != 3) {
           //dies
-          console.log("CELL DIED");
+      
           oldArraywithNewValues[y] = [...oldArraywithNewValues[y]];
           oldArraywithNewValues[y][x] = 0;
           //array[y][x] = 0;
           hasChanged = true;
         } else if (alive === 0 && count === 3) {
           //is born
-          console.log("CELL IS BORN");
+         
           oldArraywithNewValues[y] = [...oldArraywithNewValues[y]];
           oldArraywithNewValues[y][x] = 1;
           //array[y][x] = 1;
@@ -136,7 +141,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="container mx-auto">
       <button
         className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => calculateNextBoard()}
@@ -168,8 +173,8 @@ const App = () => {
 
       <h6 className="text-center text-blue-900">Generation: {seconds}</h6>
 
-      <div className="flex flex-row gap-10 justify-center">
-        <div className="opacity-40">
+      <div className="flex flex-row gap-10 justify-center flex-wrap-reverse">
+        <div style={{overflowY: "scroll" }} className="opacity-40">
           Previous Board
           {testBoard && (
             <GameBoard
@@ -180,7 +185,7 @@ const App = () => {
             ></GameBoard>
           )}
         </div>
-        <div>
+        <div style={{overflowY: "scroll" }}>
           Current Board
           <GameBoard
             changeCellValue={changeCellValue}
