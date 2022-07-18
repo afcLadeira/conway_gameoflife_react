@@ -1,4 +1,4 @@
-import { Key, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import GameBoard from "./components/board";
 
 const boardSize: number = 35; //   100x100
@@ -91,14 +91,14 @@ const App = () => {
 
         if (alive === 1 && count != 2 && count != 3) {
           //dies
-      
+
           oldArraywithNewValues[y] = [...oldArraywithNewValues[y]];
           oldArraywithNewValues[y][x] = 0;
           //array[y][x] = 0;
           hasChanged = true;
         } else if (alive === 0 && count === 3) {
           //is born
-         
+
           oldArraywithNewValues[y] = [...oldArraywithNewValues[y]];
           oldArraywithNewValues[y][x] = 1;
           //array[y][x] = 1;
@@ -142,39 +142,47 @@ const App = () => {
 
   return (
     <div className="container mx-auto">
-      <button
-        className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => calculateNextBoard()}
-      >
-        Run Simulation
-      </button>
+      <h1 className="text-center text-6xl font-normal leading-normal mt-0 mb-2 text-green-800">
+        Conway's Game of Life
+      </h1>
+      <div className="flex flex-wrap justify-around p-5">
+        <div>
+          <button
+            className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => calculateNextBoard()}
+          >
+            Run Simulation
+          </button>
 
-      <button
-        className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => stopCurrentTimer()}
-      >
-        Pause Simulation
-      </button>
-      <button
-        className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => reset()}
-      >
-        Reset
-      </button>
-      <div className="p-2">
-        <h5>Rules:</h5>
-        <p>Any live cell with two or three live neighbours survives.</p>
-        <p>Any dead cell with three live neighbours becomes a live cell.</p>
-        <p>
-          All other live cells die in the next generation. Similarly, all other
-          dead cells stay dead.
-        </p>
+          <button
+            className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => stopCurrentTimer()}
+          >
+            Pause Simulation
+          </button>
+          <button
+            className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => reset()}
+          >
+            Reset
+          </button>
+        </div>
+        <div className="p-2">
+          <h5>Rules:</h5>
+          <p>Any live cell with two or three live neighbours survives.</p>
+          <p>Any dead cell with three live neighbours becomes a live cell.</p>
+          <p>
+            All other live cells die in the next generation. Similarly, all
+            other dead cells stay dead.
+          </p>
+        </div>
       </div>
-
-      <h6 className="text-center text-blue-900">Generation: {seconds}</h6>
+      <h6 className="text-center text-xl font-normal leading-normal mt-0 mb-2 text-blue-900">
+        Generation: {seconds}
+      </h6>
 
       <div className="flex flex-row gap-10 justify-center flex-wrap-reverse">
-        <div style={{overflowY: "scroll" }} className="opacity-40">
+        <div style={{ overflowY: "scroll" }} className="opacity-40">
           Previous Board
           {testBoard && (
             <GameBoard
@@ -185,7 +193,7 @@ const App = () => {
             ></GameBoard>
           )}
         </div>
-        <div style={{overflowY: "scroll" }}>
+        <div style={{ overflowY: "scroll" }}>
           Current Board
           <GameBoard
             changeCellValue={changeCellValue}
